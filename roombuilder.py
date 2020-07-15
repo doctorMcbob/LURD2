@@ -114,7 +114,7 @@ def draw_HUD():
     HUD.fill((150, 150, 150))
     for i, key in enumerate(KEYS.keys()):
         text = ALPHABET_KEY_MAP[key] if key in ALPHABET_KEY_MAP else key
-        HUD.blit(HEL16.render(str(text) + " : " + KEYS[key], 0, (0, 0, 0)), (PW*8, i*16))
+        HUD.blit(HEL16.render(str(text) + " : " + KEYS[key], 0, (0, 0, 0)), ((PW*4)*(i//6), (((i%6)+1)*16)))
     SCREEN.blit(HUD, (0, PW*16))
 
     current = room[Y][X]
