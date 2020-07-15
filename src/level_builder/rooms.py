@@ -11,5 +11,6 @@ for room in os.listdir(room_path):
     except:
         continue
 
+
 def apply_rooms(grid):
     pass

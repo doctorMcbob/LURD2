@@ -21,6 +21,9 @@ LIGHTCYAN = (64, 255, 255)
 PURPLE = (255, 0, 255)
 DARKPURPLE = (128, 0, 128)
 LIGHTPURPLE = (255, 64, 255)
+BROWN = (165, 42, 42)
+DARKBROWN = (100, 30, 30)
+LIGHTBROWN = (180, 64, 64)
 
 TANGIBLES = [
     "stone", "wall"
@@ -32,4 +35,9 @@ TILE_COLORS = {
     "downstairs": (DARKYELLOW, CYAN),
     "floor": (LIGHTGRAY, BLACK),
     "wall": (DARKBLUE, DARKPURPLE),
+    "empty": (LIGHTGRAY, BLACK),
+    "door": (DARKBLUE, BROWN),
+
+    "enemyspawn": (RED, BLACK),
+    "itemspawn": (GREEN, BLACK),
 }
