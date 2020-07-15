@@ -1,6 +1,8 @@
 # COLORS
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
+GRAY = (100, 100, 100)
+LIGHTGRAY = (180, 180, 180)
 RED = (255, 0, 0)
 DARKRED = (128, 0, 0)
 LIGHTRED = (255, 64, 64)
@@ -19,3 +21,15 @@ LIGHTCYAN = (64, 255, 255)
 PURPLE = (255, 0, 255)
 DARKPURPLE = (128, 0, 128)
 LIGHTPURPLE = (255, 64, 255)
+
+TANGIBLES = [
+    "stone", "wall"
+]
+
+TILE_COLORS = {
+    "stone": (GRAY, BLACK),
+    "upstairs": (DARKYELLOW, CYAN),
+    "downstairs": (DARKYELLOW, CYAN),
+    "floor": (LIGHTGRAY, BLACK),
+    "wall": (DARKBLUE, DARKPURPLE),
+}

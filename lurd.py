@@ -9,23 +9,12 @@ import pygame
 from pygame.locals import *
 
 from src.locals import *
+from src.utils import expect_key
 from src.tokens import tokens as tk
 import src.drawing as dr
 from src.level_builder import builder
 
-PW = 32
-W, H = (PW * 32, PW * 20)
-
-def expect_key(expectlist=[]):
-    while True:
-        pygame.display.update()
-        for e in pygame.event.get():
-            if e.type == QUIT: quit()
-            if e.type == KEYDOWN:
-                if expectlist:
-                    if e.key in expectlist: return e.key
-                else: return e.key
-
+W, H = (32 * 32, 32 * 20)
 
 SCREEN = pygame.display.set_mode((W, H))
 pygame.display.set_caption("love hate and programming")
