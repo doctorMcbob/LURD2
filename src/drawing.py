@@ -15,6 +15,7 @@ def draw_floor(dest, floor, scroll=False, PW=1):
     dest.fill(BLACK)
     for y, row in enumerate(floor):
         for x, stack in enumerate(row):
+            if not stack: continue
             col1, col2 = TILE_COLORS[stack[-1]] if stack[-1] in TILE_COLORS else (BLACK, WHITE)
             tk.draw_token(
                 dest, stack[-1], (x*(PW*16), y*(PW*16)), col1=col1, col2=col2, PW=PW)

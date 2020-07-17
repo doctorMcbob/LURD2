@@ -36,7 +36,8 @@ TILE_COLORS = {
     "floor": (LIGHTGRAY, BLACK),
     "wall": (DARKBLUE, DARKPURPLE),
     "empty": (LIGHTGRAY, BLACK),
-    "door": (DARKBLUE, BROWN),
+    "door": (LIGHTBLUE, BROWN),
+    "alter": (BLUE, CYAN),
 
     "enemyspawn": (RED, BLACK),
     "itemspawn": (GREEN, BLACK),

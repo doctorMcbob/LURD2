@@ -3,7 +3,7 @@ from random import randint, choice
 import pygame
 from src.tokens import tokens as tk
 
-from src.utils import distance, solvable
+from src.utils import *
 from src.drawing import loading_screen_update, draw_floor
 from src.level_builder.rooms import apply_rooms
 
@@ -15,7 +15,6 @@ def fresh_floor(W, H, ent=False, ext=False):
             floor[-1].append([])
             if (x, y) == ent: floor[-1][-1].append("downstairs")
             elif (x, y) == ext: floor[-1][-1].append("upstairs")
-            else: floor[-1][-1].append("floor")
     return floor
 
 
@@ -27,8 +26,12 @@ def pathfinder(grid, ent, ext, debug_surf=False):
 
     optomized by applying more stone while the number of slots is larger
     """
-    slots = [(x, y) for x in range(len(grid[0])) for y in range(len(grid))]
-    slots.remove(ent); slots.remove(ext)
+    slots = list(filter(
+        lambda pos: not grid[pos[1]][pos[0]],
+        [(x, y)
+         for x in range(len(grid[0]))
+         for y in range(len(grid))]
+    ))
     while slots:
         new = []
         for _ in range((len(slots) // 50) + 1):
@@ -40,6 +43,7 @@ def pathfinder(grid, ent, ext, debug_surf=False):
         if not check:
             for (x, y) in new:
                 grid[y][x].pop()
+                grid[y][x].append("floor")
         else:
             for x, y in slots:
                 if (x, y) not in touched:
@@ -51,9 +55,20 @@ def pathfinder(grid, ent, ext, debug_surf=False):
             pygame.display.update()
 
 
-def carve(grid):
-    pass
-
+def carve(grid, limit=2):
+    sub = []
+    for _ in range(limit):
+        sub.append([])
+        for _ in range(limit):
+            sub[-1].append(["stone"])
+    blocks = findsub(grid, sub)
+    while blocks:
+        block = getsub(grid, choice(blocks), (limit, limit))
+        for _ in range(((limit**2)//3)*2):
+            slot = get(block, choice(list(allof(block, "stone"))))
+            slot.pop()
+            slot.append("floor")
+        blocks = findsub(grid, sub)
 
 def build(screen, limit=15):
     """
