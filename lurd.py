@@ -22,7 +22,7 @@ W, H = (32 * 32, 32 * 20)
 LIMIT = 15
 
 SCREEN = pygame.display.set_mode((W, H))
-pygame.display.set_caption("love hate and programming")
+pygame.display.set_caption("The Temple of LURD")
 
 DUNGEON = builder.build(SCREEN, limit=LIMIT, debug=debug)
 LIT = [set() for floor in DUNGEON]
