@@ -86,3 +86,33 @@ def check_rect_empty(grid, pos, dim):
         for x in range(W):
             if get(grid, (X+x, Y+y)): return False
     return True
+
+def apply_direction(pos, d):
+    # URDL syntax
+    if d == 0: return pos[0], pos[1]-1
+    if d == 1: return pos[0]+1, pos[1]
+    if d == 2: return pos[0], pos[1]+1
+    if d == 3: return pos[0]-1, pos[1]
+
+def insight(grid, p1, p2):
+    x1, y1 = p1
+    x2, y2 = p2
+    d = distance(p1, p2)
+    for n in range(d):
+        #pathfind from p1 to p2
+        x = (x1 + x2) // d
+        y = (y1 + y2) // d
+        print(x * n, y * n)
+        if any([item in TANGIBLES
+                for item in get(grid, (x, y))]):
+            return False
+    return True
+
+def update_lit(grid, lights, lit):
+    for y, line in enumerate(grid):
+        for x, stack in enumerate(line):
+            if (x, y) in lit:
+                continue
+            else:
+                if any([insight(grid, light, (x, y)) for light in lights]):
+                    lit.add((x, y))

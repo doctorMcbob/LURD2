@@ -1,11 +1,22 @@
 from random import randint, choice
 
 import pygame
-from src.tokens import tokens as tk
 
+from src.tokens import tokens as tk
 from src.utils import *
-from src.drawing import loading_screen_update, draw_floor
+from src.drawing import loading_screen_update, debug_floor
 from src.level_builder.rooms import apply_rooms
+
+STARTINGFLOOR = []
+for y in range(10):
+    STARTINGFLOOR.append([])
+    for x in range(10):
+        if (x, y) == (5, 5):
+            STARTINGFLOOR[-1].append(["upstairs"])
+        elif x in [0, 9] or y in [0, 9]:
+            STARTINGFLOOR[-1].append(["stone"])
+        else:
+            STARTINGFLOOR[-1].append(["floor"])
 
 def fresh_floor(W, H, ent=False, ext=False):
     floor = []
@@ -50,12 +61,12 @@ def pathfinder(grid, ent, ext, debug_surf=False):
                     grid[y][x].append("stone")
                     slots.remove((x, y))
         if debug_surf:
-            draw_floor(debug_surf, grid)
+            debug_floor(debug_surf, grid)
             tk.draw_sentance(debug_surf, "len slots: " + str(len(slots)), (0, 32*15))
             pygame.display.update()
 
 
-def carve(grid, limit=2):
+def carve(grid, limit=2, debug_surf=False):
     sub = []
     for _ in range(limit):
         sub.append([])
@@ -64,13 +75,15 @@ def carve(grid, limit=2):
     blocks = findsub(grid, sub)
     while blocks:
         block = getsub(grid, choice(blocks), (limit, limit))
-        for _ in range(((limit**2)//3)*2):
+        for _ in range( randint(((limit**2)//3)*2 - 1, ((limit**2)//3)*2 + 1) ):
             slot = get(block, choice(list(allof(block, "stone"))))
             slot.pop()
             slot.append("floor")
         blocks = findsub(grid, sub)
+        if debug_surf:
+            debug_floor(debug_surf, grid)
 
-def build(screen, limit=15):
+def build(screen, startingfloor=STARTINGFLOOR, limit=15, debug=False):
     """
     > actually writing docstrings
 
@@ -78,15 +91,16 @@ def build(screen, limit=15):
     each cell in the 2d array will be a stack of strings
     the strings must have a token representation
     """
+    if debug: debug = screen
     loading_screen_update(screen, 0)
-    floors = []
-    items = []
-    actors = []
+    floors = [STARTINGFLOOR]
+    items = [[]]
+    actors = [[]]
     ext = (5, 5)
-    for i in range(limit):
+    for i in range(limit+1):
         loading_screen_update(screen, int((i / limit) * 100))
 
-        W, H = (i*2)+randint(10, 20) , (i*2)+randint(10, 20)
+        W, H = (i*2)+randint(15, 20) , (i*2)+randint(15, 20)
         W, H = max(W, ext[0] + 2), max(H, ext[1] + 2)
         ent = ext
         while distance(ent, ext) < max(W , H) // 2:
@@ -96,9 +110,9 @@ def build(screen, limit=15):
         actors.append([])
 
         floor = fresh_floor(W, H, ent=ent, ext=ext)
-        apply_rooms(floor)
-        pathfinder(floor, ent, ext)
-        carve(floor)
+        apply_rooms(floor, debug_surf=debug)
+        pathfinder(floor, ent, ext, debug_surf=debug)
+        carve(floor, debug_surf=debug)
         
         floors.append(floor)
     return floors
