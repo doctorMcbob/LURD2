@@ -20,6 +20,7 @@ PLAYER = PLAYER_TEMPLATE.copy()
 
 def move(grid, d, player=PLAYER):
     move_slot = apply_direction(player["POS"], d)
+    if any([n < 0 for n in move_slot]): return False
     try:
         if any([thing in TANGIBLES for thing in get(grid, move_slot)]):
             return False

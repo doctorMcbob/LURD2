@@ -19,18 +19,19 @@ import sys
 
 debug = "-d" in sys.argv
 W, H = (32 * 32, 32 * 20)
+LIMIT = 15
 
 SCREEN = pygame.display.set_mode((W, H))
 pygame.display.set_caption("love hate and programming")
 
-DUNGEON = builder.build(SCREEN, limit=3, debug=debug)
+DUNGEON = builder.build(SCREEN, limit=LIMIT, debug=debug)
 LIT = [set() for floor in DUNGEON]
 SCREEN.fill(BLACK)
 tk.draw_sentance(SCREEN, "Done.", (0, 0), PW=3)
 
 FLOOR = 0
 PW = 4
-while FLOOR <= 15:
+while FLOOR <= LIMIT:
     """
     Exploration demo
     """
