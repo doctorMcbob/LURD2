@@ -26,9 +26,10 @@ DARKBROWN = (100, 30, 30)
 LIGHTBROWN = (180, 64, 64)
 
 TANGIBLES = [
-    "stone", "wall"
+    "stone", "wall", "grave",
 ]
 
+# Default, themes override 
 TILE_COLORS = {
     "stone": (GRAY, BLACK),
     "upstairs": (DARKYELLOW, CYAN),
@@ -38,6 +39,7 @@ TILE_COLORS = {
     "empty": (LIGHTGRAY, BLACK),
     "door": (LIGHTBLUE, BROWN),
     "alter": (BLUE, CYAN),
+    "grave": (GRAY, WHITE),
 
     "enemyspawn": (RED, BLACK),
     "itemspawn": (GREEN, BLACK),

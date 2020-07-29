@@ -4,6 +4,7 @@ import os
 
 from src.utils import insert_grid, check_rect_empty
 from src.drawing import debug_floor
+from src.themes import themes
 
 room_path = Path(os.path.dirname(os.path.abspath(__file__))) / "bin"
 
@@ -16,10 +17,11 @@ for room in os.listdir(room_path):
         continue
 
 
-def try_to_place_room(grid, attempts=20):
+def try_to_place_room(grid, roomlist, attempts=20):
     gW, gH = len(grid[0]), len(grid)
+    if not roomlist: return False
     for _ in range(attempts):
-        room = ROOMS[choice(list(ROOMS.keys()))].copy()
+        room = ROOMS[choice(roomlist)].copy()
         rW, rH = len(room[0]), len(room)
         if (gW-rW < 0 or gH-rH < 0): continue
         x, y = randint(0, gW-rW), randint(0, gH-rH)
@@ -28,8 +30,10 @@ def try_to_place_room(grid, attempts=20):
             return True
     return False
     
-def apply_rooms(grid, debug_surf=False):
-    while try_to_place_room(grid):
+def apply_rooms(grid, THEME="DEFAULT", debug_surf=False):
+    roomlist = themes.THEME_MAP[THEME]["ROOMS"]
+    if "*" in roomlist: roomlist = list(ROOMS.keys())
+    while try_to_place_room(grid, roomlist):
         if debug_surf:
             debug_floor(debug_surf, grid)
     

@@ -3,6 +3,8 @@ from pygame.locals import *
 
 from src.locals import *
 
+from math import sqrt
+
 def push(grid, pos, what): grid[pos[1]][pos[0]].append(what)
 def get(grid, pos): return grid[pos[1]][pos[0]]
 def getdim(grid): return len(grid[0]), len(grid)
@@ -34,19 +36,9 @@ def findsub(grid, sub):
         except IndexError: continue
     return ret
 
-def expect_key(expectlist=[]):
-    while True:
-        pygame.display.update()
-        for e in pygame.event.get():
-            if e.type == QUIT: quit()
-            if e.type == KEYDOWN:
-                if expectlist:
-                    if e.key in expectlist: return e.key
-                else: return e.key
-
 
 def distance(p1, p2):
-    return max(abs(p1[0] - p2[0]), abs(p1[1] - p2[1]))
+    return sqrt( (p2[0] - p1[0])**2 + (p2[1] - p1[1])**2 )
 
 def solvable(grid, ent, ext):
     checklist = [ent]
@@ -128,12 +120,22 @@ def get_line(x1, y1, x2, y2):
         points.reverse()
     return points        
 
+def check_slot(grid, slot, checklist):
+    return any([token in checklist for token in get(grid, slot)])
+
 def insight(grid, p1, p2):
     x1, y1 = p1
     x2, y2 = p2
     slots = get_line(x1, y1, x2, y2)
-    for slot in slots[:-1]:
-        if any([token in TANGIBLES+["door"] for token in get(grid, slot)]):
+    for i, slot in enumerate(slots[:-1]):
+        if i+1 < len(slots):
+            x, y = slot
+            x_, y_ = slots[i+1]
+            if x != x_ and y != y_:
+                if check_slot(grid, (x, y_), TANGIBLES+["door"]) and check_slot(grid, (x_, y), TANGIBLES+["door"]):
+                    return False
+        if slot == p1: continue
+        if check_slot(grid, slot, TANGIBLES+["door"]):
             return False
     return True
 

@@ -3,6 +3,7 @@ import pygame
 from src.locals import *
 from src.tokens import tokens as tk
 from src.utils import get
+from src.themes import themes
 
 def loading_screen_update(dest, percentage):
     dest.fill(BLACK)
@@ -26,7 +27,14 @@ def debug_floor(dest, floor):
     pygame.display.update()
 
 
-def draw_floor(dest, floor, player, scroll=False, lit=False, PW=1):
+def draw_floor(dest, G, player):
+    floor = G["DUNGEON"][G["FLOOR"]]
+    theme = G["THEMES"][G["FLOOR"]]
+    items = G["ITEMS"][G["FLOOR"]]
+    actors = G["ACTORS"][G["FLOOR"]]
+    lit = G["LIT"][G["FLOOR"]]
+    PW = G["PW"]
+    
     dest.fill(BLACK)
     W, H = dest.get_size()
     cx, cy = player["POS"]
@@ -36,19 +44,35 @@ def draw_floor(dest, floor, player, scroll=False, lit=False, PW=1):
         for x, stack in enumerate(line):
             if not stack: continue
             if lit != False and (x, y) not in lit: continue
-            col1, col2 = TILE_COLORS[stack[-1]]
-            X, Y = ((x-cx)*(PW*16), (y-cy)*(PW*16))
-            if (0 <= (W // 2 + X) <= W) and (0 <= (H // 2 + Y) <= H): 
-                tk.draw_token(
-                    dest, stack[-1], (W // 2 + X - offset, H // 2 + Y - offset),
-                    col1=col1, col2=col2, PW=PW
-                )
+            for token in stack:
+                if token in themes.THEME_MAP[theme]["COLORS"]:
+                    col1, col2 = themes.THEME_MAP[theme]["COLORS"][token]
+                else:
+                    col1, col2 = TILE_COLORS[token]
+                X, Y = ((x-cx)*(PW*16), (y-cy)*(PW*16))
+                if (0 <= (W // 2 + X) <= W) and (0 <= (H // 2 + Y) <= H): 
+                    tk.draw_token(
+                        dest, token, (W // 2 + X - offset, H // 2 + Y - offset),
+                        col1=col1, col2=col2, PW=PW
+                    )
 
+
+    for thing in items + actors:
+        if lit != False and thing["POS"] not in lit: continue
+        X, Y = ((thing["POS"][0]-cx)*(PW*16), (thing["POS"][1]-cy)*(PW*16))
+        col1, col2 = thing["colors"]
+        tk.draw_token(
+            dest, thing["token"],
+            (W // 2 + X - offset, H // 2 + Y - offset),
+            col1=col1, col2=col2,
+            PW=PW
+        )
     tk.draw_token(
         dest, player["token"],
         (W // 2 - offset, H // 2 - offset),
         col1=player["colors"][0], col2=player["colors"][1],
-        PW=PW)
+        PW=PW
+    )
                 
     pygame.display.update()
             

@@ -6,12 +6,14 @@ from src.tokens import tokens as tk
 from src.utils import *
 from src.drawing import loading_screen_update, debug_floor
 from src.level_builder.rooms import apply_rooms
+from src.enemies import enemy
+from src.themes import themes
 
 STARTINGFLOOR = []
 for y in range(10):
     STARTINGFLOOR.append([])
     for x in range(10):
-        if (x, y) == (5, 5):
+        if (x, y) == (6, 6):
             STARTINGFLOOR[-1].append(["upstairs"])
         elif x in [0, 9] or y in [0, 9]:
             STARTINGFLOOR[-1].append(["stone"])
@@ -45,7 +47,7 @@ def pathfinder(grid, ent, ext, debug_surf=False):
     ))
     while slots:
         new = []
-        for _ in range((len(slots) // 50) + 1):
+        for _ in range((len(slots) // 10) + 1):
             x, y = choice(slots)
             grid[y][x].append("stone")
             slots.remove((x, y))
@@ -83,6 +85,18 @@ def carve(grid, limit=2, debug_surf=False):
         if debug_surf:
             debug_floor(debug_surf, grid)
 
+
+def populate(grid, items, actors, theme="DEFAULT"):
+    # dummy
+    common = themes.THEME_MAP[theme]["ENEMIES"]["COMMON"]
+    rare = themes.THEME_MAP[theme]["ENEMIES"]["RARE"]
+    for slot in allof(grid, "enemyspawn"):
+        get(grid, slot).remove("enemyspawn")
+        roll = randint(0, 100)
+        if roll > 30: enemyname = choice(common)
+        else: enemyname = choice(rare)
+        actors.append(enemy.make_enemy(enemyname, slot))
+
 def build(screen, startingfloor=STARTINGFLOOR, limit=15, debug=False):
     """
     > actually writing docstrings
@@ -96,23 +110,49 @@ def build(screen, startingfloor=STARTINGFLOOR, limit=15, debug=False):
     floors = [STARTINGFLOOR]
     items = [[]]
     actors = [[]]
+    levelthemes = ["DEFAULT"]
     ext = (5, 5)
+    themelist = list(themes.THEME_MAP.keys())
+    themelist.remove("DEFAULT")
     for i in range(limit+1):
-        loading_screen_update(screen, int((i / limit) * 100))
+        loading_screen_update(screen, int((i / (limit+1)) * 100))
 
-        W, H = (i*2)+randint(15, 20) , (i*2)+randint(15, 20)
+        W, H = (i*3)+randint(25, 30) , (i*3)+randint(25, 30)
         W, H = max(W, ext[0] + 2), max(H, ext[1] + 2)
         ent = ext
-        while distance(ent, ext) < max(W , H) // 2:
+        while distance(ent, ext) < (max(W , H) // 3) * 2:
             ext = randint(2, W - 2), randint(2, H - 2)
         
         items.append([])
         actors.append([])
 
-        floor = fresh_floor(W, H, ent=ent, ext=ext)
-        apply_rooms(floor, debug_surf=debug)
-        pathfinder(floor, ent, ext, debug_surf=debug)
-        carve(floor, debug_surf=debug)
+        theme = choice(themelist)
+
+        levelthemes.append(theme)
         
-        floors.append(floor)
-    return floors
+        floor = fresh_floor(W, H, ent=ent, ext=ext)
+        tk.draw_sentance(screen, "Making rooms...", (0, 48), PW=1)
+        pygame.display.update()
+        apply_rooms(floor, THEME=theme, debug_surf=debug)
+        tk.draw_sentance(screen, "Pathfinding...", (0, 48+16), PW=1)
+        pygame.display.update()
+        pathfinder(floor, ent, ext, debug_surf=debug)
+        tk.draw_sentance(screen, "Carving...", (0, 48+32), PW=1)
+        pygame.display.update()
+        carve(floor, debug_surf=debug)
+
+        frame = []
+        for y in range(H + 2):
+            frame.append([])
+            for x in range(W + 2):
+                if x in [0, W + 1] or y in [0, H + 1]:
+                    frame[-1].append(["stone"])
+                else:
+                    frame[-1].append([])
+
+        insert_grid(frame, floor, (1, 1))
+        tk.draw_sentance(screen, "Populating...", (0, 48+48), PW=1)
+        pygame.display.update()
+        populate(frame, items[-1], actors[-1], theme=theme)
+        floors.append(frame)
+    return floors, items, actors, levelthemes
