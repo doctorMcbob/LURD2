@@ -6,7 +6,8 @@ THEME_MAP = {
         "COLORS": TILE_COLORS,
         "ENEMIES": {
             "COMMON": ["rat", "snake"],
-            "RARE": ["skeleton", "bandit"]
+            "RARE": ["skeleton", "bandit"],
+            "BOSS": ["banditking", "gravekeep"],
         }
     },
     "BANDITCAVE": {
@@ -22,6 +23,7 @@ THEME_MAP = {
         "ENEMIES": {
             "COMMON": ["rat"],
             "RARE": ["bandit"],
+            "BOSS": ["banditking"],
         }
     },
     "GRAVEYARD" : {
@@ -38,6 +40,7 @@ THEME_MAP = {
         "ENEMIES": {
             "COMMON": ["snake"],
             "RARE": ["skeleton"],
+            "BOSS": ["gravekeep"],
         }
     },
     

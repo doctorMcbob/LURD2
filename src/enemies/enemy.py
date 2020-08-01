@@ -66,7 +66,38 @@ ENEMIES = {
         
         "DROP": None,
     },
+    "banditking": {
+        "name": "bandit king",
+        "token": "banditking",
+        "colors": (LIGHTRED, DARKYELLOW),
+        "POS": None,
+        "update function": rand_strike,
+        "active": True,
 
+        "EXP": 40,
+        "HP": 30,
+        "ATK": 7,
+        "DEF": 3,
+        "SPEED": 1,
+
+        "DROP": None,
+    },
+    "gravekeep": {
+        "name": "grave keeper",
+        "token": "gravekeep",
+        "colors": (DARKGRAY, DARKRED),
+        "POS": None,
+        "update function": rand_strike,
+        "active": True,
+
+        "EXP": 40,
+        "HP": 30,
+        "ATK": 7,
+        "DEF": 3,
+        "SPEED": 1,
+
+        "DROP": None,
+    },
 }
 
 def attack(enemy, player):

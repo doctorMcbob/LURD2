@@ -2,7 +2,7 @@ import pygame
 
 from src.locals import *
 from src.tokens import tokens as tk
-from src.utils import get
+from src.utils import get, insight, color_darken
 from src.themes import themes
 
 def loading_screen_update(dest, percentage):
@@ -49,6 +49,9 @@ def draw_floor(dest, G, player):
                     col1, col2 = themes.THEME_MAP[theme]["COLORS"][token]
                 else:
                     col1, col2 = TILE_COLORS[token]
+                if not insight(floor, player["POS"], (x, y)):
+                    col1 = color_darken(col1, 75)
+                    col2 = color_darken(col2, 75)
                 X, Y = ((x-cx)*(PW*16), (y-cy)*(PW*16))
                 if (0 <= (W // 2 + X) <= W) and (0 <= (H // 2 + Y) <= H): 
                     tk.draw_token(
@@ -58,7 +61,8 @@ def draw_floor(dest, G, player):
 
 
     for thing in items + actors:
-        if lit != False and thing["POS"] not in lit: continue
+        if not insight(floor, player["POS"], thing["POS"]):
+            continue
         X, Y = ((thing["POS"][0]-cx)*(PW*16), (thing["POS"][1]-cy)*(PW*16))
         col1, col2 = thing["colors"]
         tk.draw_token(

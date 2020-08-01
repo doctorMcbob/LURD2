@@ -147,3 +147,14 @@ def update_lit(grid, lights, lit):
             else:
                 if any([insight(grid, light, (x, y)) for light in lights]):
                     lit.add((x, y))
+
+def color_darken(color, percentage):
+    c1, c2, c3 = color
+    c1 = int(percent_of(percentage, c1))
+    c2 = int(percent_of(percentage, c2))
+    c3 = int(percent_of(percentage, c3))
+    return (c1, c2, c3)
+
+def percent_of(percent, whole):
+     if whole == 0: return whole
+     return (percent * whole) / 100.0

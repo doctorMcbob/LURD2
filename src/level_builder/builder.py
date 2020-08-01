@@ -90,7 +90,16 @@ def populate(grid, items, actors, theme="DEFAULT"):
     # dummy
     common = themes.THEME_MAP[theme]["ENEMIES"]["COMMON"]
     rare = themes.THEME_MAP[theme]["ENEMIES"]["RARE"]
-    for slot in allof(grid, "enemyspawn"):
+    boss = themes.THEME_MAP[theme]["ENEMIES"]["BOSS"]
+    slots = list(allof(grid, "enemyspawn"))
+    if slots:
+        slot = choice(slots)
+        slots.remove(slot)
+        get(grid, slot).remove("enemyspawn")
+        actors.append(enemy.make_enemy(choice(boss), slot))
+    while slots:
+        slot = choice(slots)
+        slots.remove(slot)
         get(grid, slot).remove("enemyspawn")
         roll = randint(0, 100)
         if roll > 30: enemyname = choice(common)
