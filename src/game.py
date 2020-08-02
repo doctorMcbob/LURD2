@@ -43,6 +43,8 @@ def run_game(G):
                    [player.PLAYER["POS"]],
                    G["LIT"][G["FLOOR"]])
         dr.draw_floor(SCREEN, G, player.PLAYER)
+        dr.draw_HUD(SCREEN, G, player.PLAYER)        
+        pygame.display.update()
         players_turn(G)
         if G["FLOOR"] >= len(G["DUNGEON"]): return True
         enemy.update_enemies(G, player.PLAYER)

@@ -6,6 +6,7 @@ PLAYER_TEMPLATE = {
     "LVL": 0,
     "EXP": 0,
     "HP": 50,
+    "HPMAX": 50,
     "ATK": 5,
     "DEF": 5,
     "SPEED": 1,

@@ -1,4 +1,5 @@
 import pygame
+from pygame import Surface
 
 from src.locals import *
 from src.tokens import tokens as tk
@@ -77,6 +78,65 @@ def draw_floor(dest, G, player):
         col1=player["colors"][0], col2=player["colors"][1],
         PW=PW
     )
-                
-    pygame.display.update()
-            
+
+
+def draw_HUD(dest, G, player):
+    PLAYER_INFO = Surface((1024, 64))
+    PLAYER_INFO.fill((1, 255, 1))
+    # Health Bar
+    HP = player["HP"]
+    MAX = player["HPMAX"]
+    teenth = MAX / 16
+    string = str(HP) + "/" + str(MAX)
+    for n in range(16):
+        col = RED if n * teenth <= HP else LIGHTGRAY
+        if n < len(string):
+            if string[n] in tk.CHARACTER_MAP:
+                token = tk.CHARACTER_MAP[string[n]]
+            else:
+                token = string[n] 
+            tk.draw_token(
+                PLAYER_INFO, token,
+                (n * 32, 0),
+                col1=col, col2=BLACK, PW=2)
+        else:
+            tk.draw_token(
+                PLAYER_INFO, "base",
+                (n * 32, 0),
+                col1=col, col2=BLACK, PW=2)
+    string = "LEVEL: " + str(player["LVL"])
+    tk.draw_sentance(PLAYER_INFO, string, (0, 32),
+                     col1=(1, 255, 1), col2=WHITE, PW=1)
+    string = "EXP: " + str(player["EXP"])
+    tk.draw_sentance(PLAYER_INFO, string, (0, 48),
+                     col1=(1, 255, 1), col2=WHITE, PW=1)
+    string = "ATTACK: " + str(player["ATK"])
+    tk.draw_sentance(PLAYER_INFO, string, (192, 32),
+                     col1=(1, 255, 1), col2=WHITE, PW=1)
+    string = "DEFENCE: " + str(player["DEF"])
+    tk.draw_sentance(PLAYER_INFO, string, (192, 48),
+                     col1=(1, 255, 1), col2=WHITE, PW=1)
+    if player["WEAPON"]:
+        string = "WEAPON: " + player["WEAPON"]["NAME"]
+    else:
+        string = "WEAPON: None"
+    tk.draw_sentance(PLAYER_INFO, string, (512, 0),
+                     col1=(1, 255, 1), col2=WHITE, PW=1)
+    if player["ARMOR"]:
+        string = "ARMOR: " + player["ARMOR"]["NAME"]
+    else:
+        string = "ARMOR: None"
+    tk.draw_sentance(PLAYER_INFO, string, (512, 16),
+                     col1=(1, 255, 1), col2=WHITE, PW=1)
+    string = "FLOOR: " + str(G["FLOOR"])
+    tk.draw_sentance(PLAYER_INFO, string, (512, 32),
+                     col1=(1, 255, 1), col2=WHITE, PW=1)
+    string = G["THEMES"][G["FLOOR"]]
+    tk.draw_sentance(PLAYER_INFO, string, (512, 48),
+                     col1=(1, 255, 1), col2=WHITE, PW=1)
+
+
+
+
+    PLAYER_INFO.set_colorkey((1, 255, 1))
+    dest.blit(PLAYER_INFO, (0, 0))
