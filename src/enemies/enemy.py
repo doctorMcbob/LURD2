@@ -98,12 +98,75 @@ ENEMIES = {
 
         "DROP": None,
     },
+    "pirate": {
+        "name": "pirate",
+        "token": "pirate",
+        "colors": (DARKRED, LIGHTBROWN),
+        "POS": None,
+        "update function": rand_strike,
+        "active": True,
+
+        "EXP": 15,
+        "HP": 14,
+        "ATK": 8,
+        "DEF": 4,
+        "SPEED": 1,
+        
+        "DROP": None,
+    },
+    "pirateking": {
+        "name": "pirate king",
+        "token": "pirateking",
+        "colors": (BLACK, LIGHTRED),
+        "POS": None,
+        "update function": rand_strike,
+        "active": True,
+
+        "EXP": 40,
+        "HP": 28,
+        "ATK": 9,
+        "DEF": 3,
+        "SPEED": 1,
+        
+        "DROP": None,
+    },
+    "skallywag": {
+        "name": "skallywag",
+        "token": "skallywag",
+        "colors": (BLACK, LIGHTBROWN),
+        "POS": None,
+        "update function": rand_strike,
+        "active": True,
+
+        "EXP": 6,
+        "HP": 5,
+        "ATK": 4,
+        "DEF": 1,
+        "SPEED": 1,
+        
+        "DROP": None,
+    },
+    "skull": {
+        "name": "skull effigy",
+        "token": "skull",
+        "colors": (BLACK, WHITE),
+        "POS": None,
+        "update function": rand_strike,
+        "active": True,
+
+        "EXP": 15,
+        "HP": 10,
+        "ATK": 1,
+        "DEF": 4,
+        "SPEED": 1,
+        
+        "DROP": None,
+    },
+
 }
 
 def attack(enemy, player):
     player["HP"] -= max(1, enemy["ATK"] - player["DEF"])
-    print(enemy["name"] + " hits you!")
-    print(player["HP"])
     
 def make_enemy(name, pos):
     nme = ENEMIES[name].copy()

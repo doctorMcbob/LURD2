@@ -26,7 +26,7 @@ THEME_MAP = {
             "BOSS": ["banditking"],
         }
     },
-    "GRAVEYARD" : {
+    "GRAVEYARD": {
         "ROOMS": [
             "gravesitesmall", "gravesitemed", "gravesitelarge",
             "cathedral", "itemroom", "shed", "diagb", "diagf"
@@ -41,7 +41,23 @@ THEME_MAP = {
             "COMMON": ["snake"],
             "RARE": ["skeleton"],
             "BOSS": ["gravekeep"],
-        }
+        },
     },
-    
+    "PIRATEKEEP": {
+        "ROOMS": [
+            "shipd", "shipu", "boat", "boatside",
+            "lilboatup", "lilboatd"
+        ],
+        "COLORS": {
+            "floor": (LIGHTBLUE, CYAN),
+            "stone": (DARKBLUE, BLUE),
+            "wall": (LIGHTBROWN, BROWN),
+            "door": (BROWN, DARKBROWN),
+        },
+        "ENEMIES": {
+            "COMMON": ["skallywag", "rat"],
+            "RARE": ["pirate", "skull"],
+            "BOSS": ["pirateking"],
+        },
+    },
 }

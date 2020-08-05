@@ -36,5 +36,4 @@ def move(grid, d, enemylist, player=PLAYER):
 
 def attack(player, enemy):
     enemy["HP"] -= max(1, player["ATK"] - enemy["DEF"])
-    print("You hit the " + enemy["name"])
-    print(enemy["HP"])
+
