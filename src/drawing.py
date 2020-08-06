@@ -135,8 +135,16 @@ def draw_HUD(dest, G, player):
     tk.draw_sentance(PLAYER_INFO, string, (512, 48),
                      col1=(1, 255, 1), col2=WHITE, PW=1)
 
-
-
-
     PLAYER_INFO.set_colorkey((1, 255, 1))
     dest.blit(PLAYER_INFO, (0, 0))
+
+def draw_log(dest, pos, G, num_entries=4):
+    LOG = Surface((512, num_entries * 16))
+    LOG.fill((1, 255, 1))
+    for i, entry in enumerate(G["LOG"][0 - num_entries:]):
+        tk.draw_sentance(
+            LOG, entry, (0, i*16),
+            col1=(1, 255, 1), col2=WHITE, PW=1
+        )
+    LOG.set_colorkey((1, 255, 1))
+    dest.blit(LOG, pos)

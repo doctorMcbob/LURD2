@@ -158,3 +158,7 @@ def color_darken(color, percentage):
 def percent_of(percent, whole):
      if whole == 0: return whole
      return (percent * whole) / 100.0
+
+def log(G, text):
+    G["LOG"].append(text)
+

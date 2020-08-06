@@ -27,10 +27,7 @@ KEY_MAP = {
 def players_turn(G):
     inp = expect_key()
     if inp in DIRECTION_MAP:
-        player.move(
-            G["DUNGEON"][G["FLOOR"]],
-            DIRECTION_MAP[inp],
-            G["ACTORS"][G["FLOOR"]])
+        player.move(G, DIRECTION_MAP[inp])
     if inp == KEY_MAP["stairs"]:
         stack = get(
             G["DUNGEON"][G["FLOOR"]],

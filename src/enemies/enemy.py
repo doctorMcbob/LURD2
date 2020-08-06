@@ -1,5 +1,6 @@
 from src.enemies.brains import *
 from src.locals import *
+from src.utils import log
 
 ENEMIES = {
     "snake": {
@@ -123,7 +124,7 @@ ENEMIES = {
         "active": True,
 
         "EXP": 40,
-        "HP": 28,
+        "HP": 15,
         "ATK": 9,
         "DEF": 3,
         "SPEED": 1,
@@ -165,8 +166,11 @@ ENEMIES = {
 
 }
 
-def attack(enemy, player):
+def attack(enemy, G, player):
     player["HP"] -= max(1, enemy["ATK"] - player["DEF"])
+    log(G,
+        "The "+enemy["name"]+" strikes you"
+    )
     
 def make_enemy(name, pos):
     nme = ENEMIES[name].copy()
@@ -174,12 +178,11 @@ def make_enemy(name, pos):
     return nme
 
 def update_enemies(G, player):
-    grid = G["DUNGEON"][G["FLOOR"]]
     enemylist = G["ACTORS"][G["FLOOR"]]
     deadlist = []
     for enemy in enemylist:
         if enemy["HP"] <= 0: deadlist.append(enemy)
         elif enemy["active"]:
-            enemy["update function"](grid, enemy, player)
+            enemy["update function"](G, enemy, player)
     for enemy in deadlist:
         enemylist.remove(enemy)

@@ -51,7 +51,7 @@ THEME_MAP = {
         "COLORS": {
             "floor": (LIGHTBLUE, CYAN),
             "stone": (DARKBLUE, BLUE),
-            "wall": (LIGHTBROWN, BROWN),
+            "wall": (DARKBROWN, BROWN),
             "door": (BROWN, DARKBROWN),
         },
         "ENEMIES": {

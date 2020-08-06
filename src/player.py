@@ -1,5 +1,5 @@
 from src.locals import *
-from src.utils import get, apply_direction
+from src.utils import get, apply_direction, log
 
 PLAYER_TEMPLATE = {
     "POS": (4, 4),
@@ -19,7 +19,9 @@ PLAYER_TEMPLATE = {
 
 PLAYER = PLAYER_TEMPLATE.copy()
 
-def move(grid, d, enemylist, player=PLAYER):
+def move(G, d, player=PLAYER):
+    grid = G["DUNGEON"][G["FLOOR"]]
+    enemylist = G["ACTORS"][G["FLOOR"]]
     move_slot = apply_direction(player["POS"], d)
     if any([n < 0 for n in move_slot]): return False
     try:
@@ -28,12 +30,14 @@ def move(grid, d, enemylist, player=PLAYER):
     except IndexError: return False
     for enemy in enemylist:
         if move_slot == enemy["POS"]:
-            attack(player, enemy)
+            attack(player, G, enemy)
             return True
     
     player["POS"] = move_slot
     return True
 
-def attack(player, enemy):
+def attack(player, G, enemy):
     enemy["HP"] -= max(1, player["ATK"] - enemy["DEF"])
-
+    log(G,
+        "You strike the "+enemy["name"]+" ("+str(enemy["HP"])+")"
+    )

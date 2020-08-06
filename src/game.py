@@ -32,6 +32,8 @@ def setup_game(limit, debug):
     G["LIT"] = [set() for floor in G["DUNGEON"]]
     G["FLOOR"] = 0
     G["PW"] = 4
+
+    G["LOG"] = []
     
     SCREEN.fill(BLACK)
     tk.draw_sentance(SCREEN, "Done.", (0, 0), PW=3)
@@ -43,7 +45,8 @@ def run_game(G):
                    [player.PLAYER["POS"]],
                    G["LIT"][G["FLOOR"]])
         dr.draw_floor(SCREEN, G, player.PLAYER)
-        dr.draw_HUD(SCREEN, G, player.PLAYER)        
+        dr.draw_HUD(SCREEN, G, player.PLAYER)
+        dr.draw_log(SCREEN, (0, H-(16*4)), G)
         pygame.display.update()
         players_turn(G)
         if G["FLOOR"] >= len(G["DUNGEON"]): return True
