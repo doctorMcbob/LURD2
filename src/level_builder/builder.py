@@ -8,6 +8,7 @@ from src.drawing import loading_screen_update, debug_floor
 from src.level_builder.rooms import apply_rooms
 from src.enemies import enemy
 from src.themes import themes
+from src import items as its
 
 STARTINGFLOOR = []
 for y in range(10):
@@ -87,7 +88,7 @@ def carve(grid, limit=2, debug_surf=False):
 
 
 def populate(grid, items, actors, theme="DEFAULT"):
-    # dummy
+    # ENEMIES
     common = themes.THEME_MAP[theme]["ENEMIES"]["COMMON"]
     rare = themes.THEME_MAP[theme]["ENEMIES"]["RARE"]
     boss = themes.THEME_MAP[theme]["ENEMIES"]["BOSS"]
@@ -106,6 +107,15 @@ def populate(grid, items, actors, theme="DEFAULT"):
         else: enemyname = choice(rare)
         actors.append(enemy.make_enemy(enemyname, slot))
 
+    # ITEMS
+    for slot in allof(grid, "itemspawn"):
+        get(grid, slot).remove("itemspawn")
+        roll = randint(0, 100)
+        if roll > 50:
+            items.append(its.make_sword(theme, slot))
+        else:
+            items.append(its.make_shield(theme, slot))
+        
 def build(screen, startingfloor=STARTINGFLOOR, limit=15, debug=False):
     """
     > actually writing docstrings
@@ -117,7 +127,7 @@ def build(screen, startingfloor=STARTINGFLOOR, limit=15, debug=False):
     if debug: debug = screen
     loading_screen_update(screen, 0)
     floors = [STARTINGFLOOR]
-    items = [[]]
+    items = [[its.make_sword("DEFAULT", (3, 4)), its.make_shield("DEFAULT", (5, 4))]]
     actors = [[]]
     levelthemes = ["DEFAULT"]
     ext = (5, 5)

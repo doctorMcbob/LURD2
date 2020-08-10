@@ -148,3 +148,18 @@ def draw_log(dest, pos, G, num_entries=4):
         )
     LOG.set_colorkey((1, 255, 1))
     dest.blit(LOG, pos)
+
+def draw_INV(dest, pos, player, search=None):
+    INV = Surface((512, len(player["INV"]) * 16))
+    INV.fill(GRAY)
+    idx = "0123456789abcdefghijklmnopqrstuvwxyz"
+    for i, item in enumerate(player["INV"]):
+        if search in item["TRAITS"]:
+            col2 = LIGHTGREEN
+        else: col2 = WHITE
+        
+        tk.draw_sentance(
+            INV, str(i) + ": " + item["NAME"], (0, i*16),
+            col1=GRAY, col2=col2, PW=1
+        )
+    dest.blit(INV, pos)
