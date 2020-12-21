@@ -1,24 +1,39 @@
 #lurd.py
 """
-Here we go
+Oh what shall we do with the funny little things
 
-Roguelike, use token system for graphics
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~  Checklist  ~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+: cut for release after complete :
+
+[] Scaling
+ . items and enemies should be more powerful the farther down the dungeon they are found
+ . consider stored stats more as "base stats"
+ \ 
+  [] Items
+ \
+  [] Enemies
+
+[] Potions
+ \
+  [] Functionality
+  [] Populate
+
+[] Currency / Score
+ \
+  [] Populate
+ \
+  [] HallOfFame
+
+[] Shops (currency is prerequisite)
+
+[] Throw command
+
+More items?
 """
-from src.game import setup_game, run_game
-
-import sys
-
-DEBUG = "-d" in sys.argv
-LIMIT = 15
-if "-l" in sys.argv:
-    try:
-        LIMIT = int(sys.argv[sys.argv.index("-l") + 1])
-    except: pass
+from src.game import game_wrapper
 
 if __name__ == """__main__""":
-    G = setup_game(LIMIT, DEBUG)
-    if run_game(G):
-        print("You did it!")
-    else:
-        print("You are dead.")
+    game_wrapper()
 

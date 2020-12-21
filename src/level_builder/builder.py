@@ -133,7 +133,7 @@ def build(screen, startingfloor=STARTINGFLOOR, limit=15, debug=False):
     ext = (5, 5)
     themelist = list(themes.THEME_MAP.keys())
     themelist.remove("DEFAULT")
-    for i in range(limit+1):
+    for i in range(limit):
         loading_screen_update(screen, int((i / (limit+1)) * 100))
 
         W, H = (i*3)+randint(25, 30) , (i*3)+randint(25, 30)

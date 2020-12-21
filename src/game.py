@@ -2,7 +2,7 @@ import pygame
 from pygame.locals import *
 
 from src.locals import *
-from src.input_handler import players_turn
+from src.input_handler import players_turn, expect_key
 from src.utils import update_lit
 from src.tokens import tokens as tk
 import src.drawing as dr
@@ -20,6 +20,45 @@ surf.fill((1, 255, 1))
 tk.draw_token(surf, "face", (0, 0), col1=BLACK, col2=DARKGREEN, PW=2)
 surf.set_colorkey((1, 255, 1))
 pygame.display.set_icon(surf)
+
+def game_wrapper():
+    LIMIT = 15
+    DEBUG = False
+    selected = 0
+    while True:
+        dr.draw_setup_menu(
+            SCREEN, W, H,
+            LIMIT=LIMIT, DEBUG=DEBUG, selected=selected
+        )
+        inp = expect_key()
+        if inp == K_DOWN:
+            selected = (selected + 1) % 4
+        if inp == K_UP:
+            selected = (selected - 1) % 4
+
+        if inp == K_LEFT:
+            if selected == 0:
+                LIMIT = max(0, LIMIT - 1)
+            if selected == 1:
+                DEBUG = not DEBUG
+
+        if inp == K_RIGHT:
+            if selected == 0:
+                LIMIT = max(0, LIMIT + 1)
+            if selected == 1:
+                DEBUG = not DEBUG
+        
+        if inp == K_RETURN and selected == 2:
+            G = setup_game(LIMIT, DEBUG)
+            if run_game(G):
+                dr.draw_victory_screen(SCREEN, W, H)
+            else:
+                dr.draw_death_screen(SCREEN, W, H)
+
+            expect_key([K_RETURN])
+        
+        if inp == K_RETURN and selected == 3:
+            return
 
 
 def setup_game(limit, debug):

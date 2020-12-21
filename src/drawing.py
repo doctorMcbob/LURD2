@@ -6,6 +6,69 @@ from src.tokens import tokens as tk
 from src.utils import get, insight, color_darken
 from src.themes import themes
 
+def draw_setup_menu(dest, W, H, LIMIT=15, DEBUG=False, selected=0):
+    MENU = Surface((W, H))
+    MENU.fill(BLACK)
+    tk.draw_sentance(
+        MENU, "The Temple of LURD 2", (32, 32),
+        PW=3,
+    )
+    tk.draw_sentance(
+        MENU, "a RogueLike by Wesley :)", (96, 128),
+        PW=2
+    )
+    tk.draw_sentance(
+        MENU, "Floors :", (128, 256),
+        PW=2
+    )
+    tk.draw_sentance(
+        MENU, str(LIMIT), (576, 256),
+        col2=[LIGHTGREEN, WHITE, WHITE, WHITE][selected], PW=2
+    )
+    tk.draw_sentance(
+        MENU, "Debug mode :", (128, 320),
+        PW=2
+    )
+    tk.draw_sentance(
+        MENU, str(DEBUG), (576, 320),
+        col2= [WHITE, LIGHTGREEN , WHITE, WHITE][selected], PW=2
+    )
+    tk.draw_sentance(
+        MENU, "Begin", (576, 384),
+        col2= [WHITE, WHITE, LIGHTGREEN, WHITE][selected], PW=2
+    )
+    tk.draw_sentance(
+        MENU, "Exit", (576, 448),
+        col2= [WHITE, WHITE, WHITE, LIGHTGREEN][selected], PW=2
+    )
+    dest.blit(MENU, (0, 0))
+
+
+def draw_victory_screen(dest, W, H):
+    VICTORY = Surface((W, H))
+    tk.draw_sentance(
+        VICTORY, "You did it", (64, 64), PW=3
+    )
+    tk.draw_sentance(
+        VICTORY, "You escaped the Temple of LURD", (96, 128), PW=1
+    )
+    tk.draw_token(
+        VICTORY, "face", (96, 192), col2=GREEN, PW=5
+    )
+    dest.blit(VICTORY, (0, 0))
+
+
+def draw_death_screen(dest, W, H):
+    DEATH = Surface((W, H))
+    tk.draw_sentance(
+        DEATH, "You died", (64, 64), PW=3
+    )
+    tk.draw_sentance(
+        DEATH, "The Temple of LURD claims another life", (96, 128), PW=1
+    )
+    dest.blit(DEATH, (0, 0))
+
+    
 def loading_screen_update(dest, percentage):
     dest.fill(BLACK)
     string = "Loading... " + str(percentage) + "%"
@@ -159,7 +222,7 @@ def draw_INV(dest, pos, player, search=None):
         else: col2 = WHITE
         
         tk.draw_sentance(
-            INV, str(i) + ": " + item["NAME"], (0, i*16),
+            INV, idx[i] + ": " + item["NAME"], (0, i*16),
             col1=GRAY, col2=col2, PW=1
         )
     dest.blit(INV, pos)
